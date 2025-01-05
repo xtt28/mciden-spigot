@@ -7,6 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.mysql.cj.jdbc.MysqlConnectionPoolDataSource;
 import com.mysql.cj.jdbc.MysqlDataSource;
 
+import io.github.xtt28.identityservice.spigot.command.WhoAmICommand;
 import io.github.xtt28.identityservice.spigot.listener.PlayerJoinListener;
 
 public final class PluginMain extends JavaPlugin {
@@ -32,6 +33,10 @@ public final class PluginMain extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new PlayerJoinListener(this.getLogger(), this.dataSource), this);
     }
 
+    private final void registerCommands() {
+        this.getCommand("whoami").setExecutor(new WhoAmICommand());
+    }
+
     @Override
     public final void onEnable() {
         this.getLogger().info("Beginning to establish connection to MySQL database.");
@@ -45,5 +50,6 @@ public final class PluginMain extends JavaPlugin {
         }
 
         this.registerListeners();
+        this.registerCommands();
     }
 }

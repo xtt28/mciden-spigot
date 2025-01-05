@@ -10,6 +10,23 @@ api-version: 1.13
 libraries:
   - com.mysql:mysql-connector-j:9.1.0
 
+commands:
+  whoami:
+    description: Tells you the full name, academy, and email associated with your account.
+    permission: idenservice.command.whoami
+    permission-message: '§cYou do not have permission to issue this command.'
+    usage: '§cUsage: /<command>'
+  whois:
+    description: Tells you the full name, academy, and email associated with someone else's account.
+    permission: idenservice.command.whois
+    permission-message: '§cYou do not have permission to issue this command.'
+    usage: '§cUsage: /<command> <playername>'
+
 permissions:
   idenservice.bypass:
     description: Bypass whitelist checking upon joining the server.
+  idenservice.command.whoami:
+    description: Allows you to use the command /whoami.
+    default: true
+  idenservice.command.whois:
+    description: Allows you to use the command /whois.

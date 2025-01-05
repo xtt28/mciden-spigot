@@ -20,7 +20,11 @@ public final class ProfileCache {
         profileCache.put(playerUuid, studentDto);
     }
 
-    public static StudentDTO getStudentByPlayer(@Nonnull final UUID playerUuid) {
-        return profileCache.get(playerUuid);
+    public static @Nonnull StudentDTO getStudentByPlayer(@Nonnull final UUID playerUuid) {
+        final var profile = profileCache.get(playerUuid);
+        if (profile == null)
+            throw new IllegalStateException("Player does not have profile cache entry");
+
+        return profile;
     }
 }
