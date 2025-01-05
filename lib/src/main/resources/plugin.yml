@@ -1,0 +1,15 @@
+name: IdentityService
+description: Spigot component of IdentityService server access control solution
+main: io.github.xtt28.identityservice.spigot.PluginMain
+version: 2025.1
+author: xtt28
+website: https://github.com/xtt28/mciden-spigot
+
+api-version: 1.13
+
+libraries:
+  - com.mysql:mysql-connector-j:9.1.0
+
+permissions:
+  idenservice.bypass:
+    description: Bypass whitelist checking upon joining the server.
