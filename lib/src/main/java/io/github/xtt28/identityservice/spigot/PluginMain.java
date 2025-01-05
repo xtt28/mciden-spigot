@@ -7,9 +7,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.mysql.cj.jdbc.MysqlConnectionPoolDataSource;
 import com.mysql.cj.jdbc.MysqlDataSource;
 
-import io.github.xtt28.identityservice.spigot.database.dto.StudentDTO;
+import io.github.xtt28.identityservice.spigot.listener.PlayerJoinListener;
 
-public class PluginMain extends JavaPlugin {
+public final class PluginMain extends JavaPlugin {
 
     private final MysqlDataSource dataSource = new MysqlConnectionPoolDataSource();
 
@@ -28,16 +28,22 @@ public class PluginMain extends JavaPlugin {
         }
     }
 
+    private final void registerListeners() {
+        this.getServer().getPluginManager().registerEvents(new PlayerJoinListener(this.getLogger(), this.dataSource), this);
+    }
+
     @Override
-    public void onEnable() {
+    public final void onEnable() {
         this.getLogger().info("Beginning to establish connection to MySQL database.");
         this.setupDatabase();
         try {
             this.getLogger().info("Testing connection to MySQL database.");
             this.testDatabaseConnection();
-        } catch (SQLException ex) {
+        } catch (final SQLException ex) {
             this.getLogger().severe("Couldn't establish database connection. Disabling plugin.");
             ex.printStackTrace();
         }
+
+        this.registerListeners();
     }
 }
