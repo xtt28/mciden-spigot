@@ -8,6 +8,7 @@ import com.mysql.cj.jdbc.MysqlConnectionPoolDataSource;
 import com.mysql.cj.jdbc.MysqlDataSource;
 
 import io.github.xtt28.identityservice.spigot.command.WhoAmICommand;
+import io.github.xtt28.identityservice.spigot.command.WhoIsCommand;
 import io.github.xtt28.identityservice.spigot.listener.PlayerJoinListener;
 
 public final class PluginMain extends JavaPlugin {
@@ -35,6 +36,7 @@ public final class PluginMain extends JavaPlugin {
 
     private final void registerCommands() {
         this.getCommand("whoami").setExecutor(new WhoAmICommand());
+        this.getCommand("whois").setExecutor(new WhoIsCommand());
     }
 
     @Override
