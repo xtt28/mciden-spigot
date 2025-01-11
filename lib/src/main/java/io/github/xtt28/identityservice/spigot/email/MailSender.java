@@ -1,6 +1,7 @@
 package io.github.xtt28.identityservice.spigot.email;
 
 import java.io.UnsupportedEncodingException;
+import java.text.MessageFormat;
 import java.util.Date;
 
 import javax.annotation.Nonnull;
@@ -11,11 +12,27 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import io.github.xtt28.identityservice.spigot.database.dto.StudentDTO;
+
 public final class MailSender {
 
     private MailSender() {
 
     }
+
+    private static final String ACTIVATE_SUBJECT = "Let's activate your in-game account.";
+    private static final String ACTIVATE_BODY_FORMAT = """
+            Hi {0} {1},
+
+            Click on the below link to activate your account and access the BCA 2028 Lifesteal server. This link expires in 1 hour.
+
+            {2}
+
+            ~ IdentityService
+            BCA 2028 Lifesteal Server
+
+            If you do not recognize this email, it is safe to ignore.
+            """;
 
     // https://www.digitalocean.com/community/tutorials/javamail-example-send-mail-in-java-smtp
     public static void sendMail(@Nonnull final Session sess, @Nonnull final String from, @Nonnull final String to,
@@ -27,7 +44,7 @@ public final class MailSender {
         msg.addHeader("Format", "Flowed");
         msg.addHeader("Content-Transfer-Encoding", "8bit");
 
-        msg.setFrom(new InternetAddress(from, "IdentityService"));
+        msg.setFrom(new InternetAddress(from, "BCA 2028 Lifesteal"));
         msg.setReplyTo(InternetAddress.parse(from, false));
         msg.setSubject(subject, "UTF-8");
         msg.setText(body, "UTF-8");
@@ -35,5 +52,14 @@ public final class MailSender {
 
         msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to, false));
         Transport.send(msg);
+    }
+
+    public static void sendVerificationEmail(@Nonnull final Session sess, @Nonnull final String from,
+            @Nonnull final String verifyIntentId, @Nonnull final StudentDTO student,
+            @Nonnull final String urlTemplate) throws UnsupportedEncodingException, MessagingException {
+        final var verifyUrl = MessageFormat.format(urlTemplate, verifyIntentId);
+        final var body = MessageFormat.format(ACTIVATE_BODY_FORMAT, student.firstName(), student.lastName(), verifyUrl);
+
+        sendMail(sess, from, student.email(), ACTIVATE_SUBJECT, body);
     }
 }

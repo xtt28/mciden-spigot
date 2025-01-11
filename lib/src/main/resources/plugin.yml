@@ -22,6 +22,11 @@ commands:
     permission: idenservice.command.whois
     permission-message: '§cYou do not have permission to issue this command.'
     usage: '§cUsage: /<command> <playername>'
+  verify:
+    description: Sends you a verification email to activate your account.
+    permission: idenservice.command.verify
+    permission-message: '§cYou do not have permission to issue this command.'
+    usage: '§cUsage: /<command> <email>'
 
 permissions:
   idenservice.bypass:
@@ -31,3 +36,6 @@ permissions:
     default: true
   idenservice.command.whois:
     description: Allows you to use the command /whois.
+  idenservice.command.verify:
+    description: Allows you to use the command /verify.
+    default: true

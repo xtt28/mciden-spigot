@@ -11,6 +11,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.mysql.cj.jdbc.MysqlConnectionPoolDataSource;
 import com.mysql.cj.jdbc.MysqlDataSource;
 
+import io.github.xtt28.identityservice.spigot.command.VerifyCommand;
 import io.github.xtt28.identityservice.spigot.command.WhoAmICommand;
 import io.github.xtt28.identityservice.spigot.command.WhoIsCommand;
 import io.github.xtt28.identityservice.spigot.email.MailSender;
@@ -44,12 +45,16 @@ public final class PluginMain extends JavaPlugin {
     }
 
     private final void registerListeners() {
-        this.getServer().getPluginManager().registerEvents(new PlayerJoinListener(this.getLogger(), this.dataSource), this);
+        this.getServer().getPluginManager().registerEvents(new PlayerJoinListener(this.getLogger(), this.dataSource),
+                this);
     }
 
     private final void registerCommands() {
         this.getCommand("whoami").setExecutor(new WhoAmICommand());
         this.getCommand("whois").setExecutor(new WhoIsCommand());
+        this.getCommand("verify").setExecutor(
+                new VerifyCommand(this.dataSource, this.mailSession, this.getConfig().getString("mail.user"),
+                        this.getConfig().getString("verify.url-template")));
     }
 
     @Override
@@ -71,7 +76,8 @@ public final class PluginMain extends JavaPlugin {
         this.registerCommands();
 
         try {
-            MailSender.sendMail(this.mailSession, "admin@myserver.com", "example@example.com", "Test email", "Test email");
+            MailSender.sendMail(this.mailSession, "admin@myserver.com", "example@example.com", "Test email",
+                    "Test email");
         } catch (final MessagingException | UnsupportedEncodingException ex) {
             ex.printStackTrace();
         }
