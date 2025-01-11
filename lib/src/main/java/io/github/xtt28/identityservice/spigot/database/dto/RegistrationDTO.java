@@ -1,6 +1,6 @@
 package io.github.xtt28.identityservice.spigot.database.dto;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
@@ -8,5 +8,5 @@ import javax.annotation.Nonnull;
 public record RegistrationDTO(
         int studentId,
         @Nonnull UUID playerUuid,
-        @Nonnull Date createdAt) {
+        @Nonnull Timestamp createdAt) {
 }
