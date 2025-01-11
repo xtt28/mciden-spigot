@@ -4,3 +4,11 @@ db:
   db: identityservice
   host: 127.0.0.1
   port: 3306
+verify:
+  url-template: 'https://localhost:8080/activate/{0}'
+mail:
+  user: ''
+  password: ''
+  host: 127.0.0.1
+  port: 1025
+  starttls: false

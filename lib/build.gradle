@@ -31,6 +31,7 @@ repositories {
 dependencies {
     compileOnly 'org.spigotmc:spigot-api:1.21.4-R0.1-SNAPSHOT' // The Spigot API with no shadowing. Requires the OSS repo.
     implementation 'com.mysql:mysql-connector-j:9.1.0'
+    implementation 'com.sun.mail:javax.mail:1.6.2'
 }
 
 // Apply a specific Java toolchain to ease working on different environments.

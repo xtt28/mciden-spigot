@@ -9,6 +9,7 @@ api-version: 1.13
 
 libraries:
   - com.mysql:mysql-connector-j:9.1.0
+  - com.sun.mail:javax.mail:1.6.2
 
 commands:
   whoami:
