@@ -74,12 +74,5 @@ public final class PluginMain extends JavaPlugin {
         this.setupEmail();
         this.registerListeners();
         this.registerCommands();
-
-        try {
-            MailSender.sendMail(this.mailSession, "admin@myserver.com", "example@example.com", "Test email",
-                    "Test email");
-        } catch (final MessagingException | UnsupportedEncodingException ex) {
-            ex.printStackTrace();
-        }
     }
 }
