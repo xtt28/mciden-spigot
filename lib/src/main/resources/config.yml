@@ -8,6 +8,7 @@ verify:
   url-template: 'https://localhost:8080/activate/{0}'
 mail:
   user: ''
+  auth: false
   password: ''
   host: 127.0.0.1
   port: 1025
