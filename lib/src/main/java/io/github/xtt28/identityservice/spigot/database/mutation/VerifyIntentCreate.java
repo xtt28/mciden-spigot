@@ -18,7 +18,7 @@ public final class VerifyIntentCreate {
     }
 
     public static String createVerifyIntent(@Nonnull final MysqlDataSource dataSource, @Nonnull final StudentDTO student,
-            @Nonnull final UUID uuid)
+            @Nonnull final UUID recordUuid, @Nonnull final UUID playerUuid)
             throws SQLException {
         try (final var conn = dataSource.getConnection();
                 final var stmt = conn.prepareStatement(
@@ -26,15 +26,15 @@ public final class VerifyIntentCreate {
 
             final var expiry = Timestamp.valueOf(LocalDateTime.now().plusHours(1));
 
-            stmt.setString(1, uuid.toString());
+            stmt.setString(1, recordUuid.toString());
             stmt.setInt(2, student.id());
-            stmt.setString(3, uuid.toString());
+            stmt.setString(3, playerUuid.toString());
             stmt.setTimestamp(4, expiry);
 
             if (stmt.executeUpdate() == 0) // No rows affected
                 throw new SQLException("Could not create verify intent - no rows affected.");
 
-            return uuid.toString();
+            return recordUuid.toString();
         }
     }
 }

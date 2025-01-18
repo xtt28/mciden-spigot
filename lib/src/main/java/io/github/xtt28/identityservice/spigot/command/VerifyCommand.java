@@ -2,6 +2,7 @@ package io.github.xtt28.identityservice.spigot.command;
 
 import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
+import java.util.UUID;
 
 import javax.annotation.Nonnull;
 import javax.mail.MessagingException;
@@ -63,7 +64,7 @@ public class VerifyCommand implements CommandExecutor {
 
         final String id;
         try {
-            id = VerifyIntentCreate.createVerifyIntent(dataSource, studentDto, player.getUniqueId());
+            id = VerifyIntentCreate.createVerifyIntent(dataSource, studentDto, UUID.randomUUID(), player.getUniqueId());
         } catch (SQLException ex) {
             player.kickPlayer(ColorUtil.translate(
                     "&cCould not create verification intent. Try again or contact support if the error persists."));

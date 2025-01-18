@@ -5,7 +5,6 @@ import javax.annotation.Nullable;
 
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
-import org.jetbrains.annotations.NotNull;
 
 import io.github.xtt28.identityservice.spigot.database.cache.ProfileCache;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
