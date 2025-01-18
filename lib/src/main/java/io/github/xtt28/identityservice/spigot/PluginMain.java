@@ -1,9 +1,7 @@
 package io.github.xtt28.identityservice.spigot;
 
-import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
 
-import javax.mail.MessagingException;
 import javax.mail.Session;
 
 import org.bukkit.plugin.java.JavaPlugin;
@@ -16,6 +14,7 @@ import io.github.xtt28.identityservice.spigot.command.WhoAmICommand;
 import io.github.xtt28.identityservice.spigot.command.WhoIsCommand;
 import io.github.xtt28.identityservice.spigot.email.SessionCreator;
 import io.github.xtt28.identityservice.spigot.listener.PlayerJoinListener;
+import io.github.xtt28.identityservice.spigot.placeholder.IdentityPlaceholderExpansion;
 
 public final class PluginMain extends JavaPlugin {
 
@@ -65,6 +64,20 @@ public final class PluginMain extends JavaPlugin {
         }
     }
 
+    private final void registerPlaceholders() {
+        final var isPapiPresent = this.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI");
+        final var isHub = this.isHubServer();
+        this.getLogger().info("PlaceholderAPI enabled: " + isPapiPresent);
+        this.getLogger().info("Hub server: " + this.isHubServer());
+
+        if (isPapiPresent && !isHub) {
+            this.getLogger().info("Registering PlaceholderAPI expansion.");
+            final var result = new IdentityPlaceholderExpansion(this.getDescription()).register();
+            if (!result)
+                this.getLogger().warning("Could not register PlaceholderAPI expansion.");
+        }
+    }
+
     @Override
     public final void onEnable() {
         this.saveDefaultConfig();
@@ -80,6 +93,7 @@ public final class PluginMain extends JavaPlugin {
         }
 
         this.setupEmail();
+        this.registerPlaceholders();
         this.registerListeners();
         this.registerCommands();
     }
