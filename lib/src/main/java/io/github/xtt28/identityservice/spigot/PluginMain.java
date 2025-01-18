@@ -14,7 +14,6 @@ import com.mysql.cj.jdbc.MysqlDataSource;
 import io.github.xtt28.identityservice.spigot.command.VerifyCommand;
 import io.github.xtt28.identityservice.spigot.command.WhoAmICommand;
 import io.github.xtt28.identityservice.spigot.command.WhoIsCommand;
-import io.github.xtt28.identityservice.spigot.email.MailSender;
 import io.github.xtt28.identityservice.spigot.email.SessionCreator;
 import io.github.xtt28.identityservice.spigot.listener.PlayerJoinListener;
 
@@ -22,6 +21,10 @@ public final class PluginMain extends JavaPlugin {
 
     private final MysqlDataSource dataSource = new MysqlConnectionPoolDataSource();
     private Session mailSession;
+
+    private final boolean isHubServer() {
+        return this.getConfig().getBoolean("this-is-a-hub-server");
+    }
 
     // Most database connection code is taken from:
     // https://www.spigotmc.org/wiki/connecting-to-databases-mysql/
@@ -45,16 +48,21 @@ public final class PluginMain extends JavaPlugin {
     }
 
     private final void registerListeners() {
-        this.getServer().getPluginManager().registerEvents(new PlayerJoinListener(this.getLogger(), this.dataSource),
-                this);
+        if (!this.isHubServer())
+            this.getServer().getPluginManager().registerEvents(
+                    new PlayerJoinListener(this.getLogger(), this.dataSource),
+                    this);
     }
 
     private final void registerCommands() {
-        this.getCommand("whoami").setExecutor(new WhoAmICommand());
-        this.getCommand("whois").setExecutor(new WhoIsCommand());
-        this.getCommand("verify").setExecutor(
-                new VerifyCommand(this.dataSource, this.mailSession, this.getConfig().getString("mail.user"),
-                        this.getConfig().getString("verify.url-template")));
+        if (this.isHubServer())
+            this.getCommand("verify").setExecutor(
+                    new VerifyCommand(this.dataSource, this.mailSession, this.getConfig().getString("mail.user"),
+                            this.getConfig().getString("verify.url-template")));
+        else {
+            this.getCommand("whoami").setExecutor(new WhoAmICommand());
+            this.getCommand("whois").setExecutor(new WhoIsCommand());
+        }
     }
 
     @Override
