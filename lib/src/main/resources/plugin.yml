@@ -5,6 +5,8 @@ version: 2025.1
 author: xtt28
 website: https://github.com/xtt28/mciden-spigot
 
+softdepend: [PlaceholderAPI]
+
 api-version: 1.13
 
 libraries:

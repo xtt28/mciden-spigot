@@ -26,12 +26,14 @@ repositories {
 
     maven { url = 'https://oss.sonatype.org/content/repositories/snapshots' }
     maven { url = 'https://oss.sonatype.org/content/repositories/central' }
+    maven { url = 'https://repo.extendedclip.com/releases/' }
 }
 
 dependencies {
-    compileOnly 'org.spigotmc:spigot-api:1.21.4-R0.1-SNAPSHOT' // The Spigot API with no shadowing. Requires the OSS repo.
-    implementation 'com.mysql:mysql-connector-j:9.1.0'
-    implementation 'com.sun.mail:javax.mail:1.6.2'
+    compileOnly 'org.spigotmc:spigot-api:1.21.4-R0.1-SNAPSHOT'
+    compileOnly 'me.clip:placeholderapi:2.11.6'
+    implementation 'com.mysql:mysql-connector-j:9.1.0' // To be downloaded by Spigot library downloader.
+    implementation 'com.sun.mail:javax.mail:1.6.2'     // To be downloaded by Spigot library downloader.
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
