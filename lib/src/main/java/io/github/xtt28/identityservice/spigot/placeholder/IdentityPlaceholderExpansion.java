@@ -34,6 +34,9 @@ public final class IdentityPlaceholderExpansion extends PlaceholderExpansion {
 
     @Override
     public final @Nullable String onPlaceholderRequest(final Player player, final String params) {
+        if (player == null)
+            return null;
+        
         final var profile = ProfileCache.getStudentByPlayer(player.getUniqueId());
 
         return switch (params) {
