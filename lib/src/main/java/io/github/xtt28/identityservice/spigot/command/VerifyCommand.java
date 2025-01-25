@@ -12,6 +12,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
 
@@ -23,13 +24,16 @@ import io.github.xtt28.identityservice.spigot.helper.ColorUtil;
 
 public class VerifyCommand implements CommandExecutor {
 
+    private final JavaPlugin plugin;
     private final MysqlDataSource dataSource;
     private final Session session;
     private final String emailAddr;
     private final String urlTemplate;
 
-    public VerifyCommand(@Nonnull final MysqlDataSource dataSource, @Nonnull final Session session,
+    public VerifyCommand(@Nonnull final JavaPlugin plugin, @Nonnull final MysqlDataSource dataSource,
+            @Nonnull final Session session,
             @Nonnull final String emailAddr, @Nonnull final String urlTemplate) {
+        this.plugin = plugin;
         this.dataSource = dataSource;
         this.session = session;
         this.emailAddr = emailAddr;
@@ -73,7 +77,7 @@ public class VerifyCommand implements CommandExecutor {
         }
 
         try {
-            MailSender.sendVerificationEmail(this.session, this.emailAddr, id, studentDto, this.urlTemplate);
+            MailSender.sendVerificationEmail(this.plugin, this.session, this.emailAddr, id, studentDto, this.urlTemplate);
             player.kickPlayer(ColorUtil.translate(
                     "&aPlease check your email for a verification link (you might have to check your spam folder)."));
         } catch (MessagingException | UnsupportedEncodingException ex) {

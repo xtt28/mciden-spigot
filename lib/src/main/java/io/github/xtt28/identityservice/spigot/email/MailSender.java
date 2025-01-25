@@ -12,6 +12,9 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.java.JavaPlugin;
+
 import io.github.xtt28.identityservice.spigot.database.dto.StudentDTO;
 
 public final class MailSender {
@@ -35,7 +38,7 @@ public final class MailSender {
             """;
 
     // https://www.digitalocean.com/community/tutorials/javamail-example-send-mail-in-java-smtp
-    public static void sendMail(@Nonnull final Session sess, @Nonnull final String from, @Nonnull final String to,
+    public static void sendMail(@Nonnull final JavaPlugin plugin, @Nonnull final Session sess, @Nonnull final String from, @Nonnull final String to,
             @Nonnull final String subject,
             @Nonnull final String body) throws MessagingException, UnsupportedEncodingException {
         var msg = new MimeMessage(sess);
@@ -51,15 +54,22 @@ public final class MailSender {
         msg.setSentDate(new Date());
 
         msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to, false));
-        Transport.send(msg);
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+            try {
+                Transport.send(msg);
+            } catch (final MessagingException ex) {
+                plugin.getLogger().severe("Could not send message.");
+                ex.printStackTrace();
+            }
+        });
     }
 
-    public static void sendVerificationEmail(@Nonnull final Session sess, @Nonnull final String from,
+    public static void sendVerificationEmail(@Nonnull final JavaPlugin plugin, @Nonnull final Session sess, @Nonnull final String from,
             @Nonnull final String verifyIntentId, @Nonnull final StudentDTO student,
             @Nonnull final String urlTemplate) throws UnsupportedEncodingException, MessagingException {
         final var verifyUrl = MessageFormat.format(urlTemplate, verifyIntentId);
         final var body = MessageFormat.format(ACTIVATE_BODY_FORMAT, student.firstName(), student.lastName(), verifyUrl);
 
-        sendMail(sess, from, student.email(), ACTIVATE_SUBJECT, body);
+        sendMail(plugin, sess, from, student.email(), ACTIVATE_SUBJECT, body);
     }
 }

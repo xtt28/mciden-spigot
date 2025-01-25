@@ -56,7 +56,8 @@ public final class PluginMain extends JavaPlugin {
     private final void registerCommands() {
         if (this.isHubServer())
             this.getCommand("verify").setExecutor(
-                    new VerifyCommand(this.dataSource, this.mailSession, this.getConfig().getString("mail.user"),
+                    new VerifyCommand(this, this.dataSource, this.mailSession,
+                            this.getConfig().getString("mail.address"),
                             this.getConfig().getString("verify.url-template")));
         else {
             this.getCommand("whoami").setExecutor(new WhoAmICommand());
